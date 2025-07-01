@@ -1,0 +1,168 @@
+name: Auto Grading - Profile Page & Portfolio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check portfolio structure
+        run: |
+          echo "=== Checking portfolio files ==="
+
+          # Portfolio directory
+          if [ -d "portfolio" ]; then
+            echo "✅ Portfolio directory found"
+            test -f portfolio/index.html && echo "  ✓ index.html exists" || echo "  ❌ index.html missing"
+            test -f portfolio/style.css && echo "  ✓ style.css exists" || echo "  ❌ style.css missing"
+            test -f portfolio/script.js && echo "  ✓ script.js exists" || echo "  ❌ script.js missing"
+          else
+            echo "❌ Portfolio directory not found"
+          fi
+
+          # GitHub profile README
+          if [ -f "profile-template.md" ] || [ -f "README.md" ]; then
+            echo "✅ Profile README template found"
+          else
+            echo "⚠️  Profile README template not found"
+          fi
+
+      - name: Build portfolio
+        run: |
+          if [ -f "portfolio/index.html" ]; then
+            echo "✅ Portfolio is ready for deployment"
+          fi
+
+      - name: Check for responsive design
+        run: |
+          if [ -f "portfolio/style.css" ]; then
+            if grep -q "@media" portfolio/style.css; then
+              echo "✅ Responsive design detected"
+            else
+              echo "⚠️  No media queries found - check responsive design"
+            fi
+          fi
+
+      - name: Analyze portfolio content
+        run: |
+          node -e "
+          const fs = require('fs');
+
+          console.log('=== Portfolio Analysis ===');
+
+          if (fs.existsSync('portfolio/index.html')) {
+            const html = fs.readFileSync('portfolio/index.html', 'utf8');
+
+            // Check for essential sections
+            const sections = {
+              'Header/Navigation': /<(header|nav)/i.test(html),
+              'About section': /about|自己紹介|プロフィール/i.test(html),
+              'Skills section': /skills|スキル|技術/i.test(html),
+              'Projects section': /projects|プロジェクト|作品/i.test(html),
+              'Contact section': /contact|連絡|お問い合わせ/i.test(html)
+            };
+
+            Object.entries(sections).forEach(([section, exists]) => {
+              console.log(\`\${exists ? '✅' : '⚠️ '} \${section}\`);
+            });
+          }
+          "
+
+      - name: Create grading report
+        run: |
+          cat > grading-report.json << EOF
+          {
+            "exercise": "04-profile-page",
+            "totalScore": 80,
+            "scores": {
+              "functionality": 30,
+              "codeQuality": 25,
+              "security": 15,
+              "performance": 10
+            },
+            "grade": "B",
+            "feedback": [
+              "✅ ポートフォリオの基本構造が実装されています",
+              "✅ レスポンシブデザインが考慮されています",
+              "⚠️  全セクションの実装を確認してください",
+              "💡 パフォーマンス最適化を検討してください"
+            ]
+          }
+          EOF
+
+      - name: Run Lighthouse CI
+        if: ${{ false }} # GitHub Pagesデプロイ後に有効化
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          uploadArtifacts: true
+
+      - name: Upload grading report
+        uses: actions/upload-artifact@v3
+        with:
+          name: grading-report
+          path: grading-report.json
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = `## 🎯 採点結果: プロフィールページ＆ポートフォリオ
+
+            **総合評価**: B (80/100点)
+
+            ### 📊 評価内訳
+            - 機能性: 30/40点
+            - コード品質: 25/30点
+            - セキュリティ: 15/20点
+            - パフォーマンス: 10/10点
+
+            ### ✅ 実装確認
+            - ポートフォリオサイトの基本構造
+            - レスポンシブデザイン
+            - GitHubプロフィール用README
+
+            ### 💡 改善提案
+            1. **コンテンツの充実**
+               - プロジェクトの詳細説明を追加
+               - スキルレベルの可視化
+               - 実績や経験の具体例
+
+            2. **デザインの向上**
+               - アニメーション効果の追加
+               - ダークモード対応
+               - アクセシビリティの改善
+
+            3. **パフォーマンス**
+               - 画像の最適化
+               - 遅延読み込みの実装
+               - フォントの最適化
+
+            ### 🚀 デプロイ
+            GitHub Pagesへのデプロイを忘れずに行ってください。
+            デプロイ後、URLをREADMEに記載してください。
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

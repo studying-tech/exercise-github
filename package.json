@@ -1,0 +1,47 @@
+{
+  "name": "exercise-04-profile-page",
+  "version": "1.0.0",
+  "description": "Exercise 04: Profile Page & Portfolio - GitHub Profile and Portfolio Website",
+  "main": "portfolio/script.js",
+  "scripts": {
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "grade": "node ../../scripts/grade-exercise-04.js",
+    "serve": "serve portfolio -l 3000",
+    "lint": "bunx @biomejs/biome check",
+    "lint:fix": "bunx @biomejs/biome check --write",
+    "validate:html": "html-validate portfolio/index.html",
+    "validate:css": "stylelint portfolio/style.css",
+    "check:links": "markdown-link-check README.md",
+    "deploy": "echo 'Deploy to GitHub Pages via repository settings'"
+  },
+  "keywords": [
+    "portfolio",
+    "profile",
+    "github-pages",
+    "html",
+    "css",
+    "javascript",
+    "responsive-design"
+  ],
+  "author": "Student Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "html-validate": "^8.7.0",
+    "markdown-link-check": "^3.11.0",
+    "serve": "^14.2.1",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/exercise-04-profile-page.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/exercise-04-profile-page/issues"
+  },
+  "homepage": "https://username.github.io/exercise-04-profile-page"
+}

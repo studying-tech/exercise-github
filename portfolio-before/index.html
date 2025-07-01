@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Name - Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">Your Name</div>
+        <!-- 【課題1】ナビゲーションリンクを実装してください
+                 要件:
+                 - ul要素でclass="nav-links"
+                 - Home, About, Projects, Contactへのリンク
+                 - href属性は#home, #about, #projects, #contact
+            -->
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <div class="hero-content">
+          <!-- 【課題2】ヒーローセクションのコンテンツを実装してください
+                     要件:
+                     - h1要素で名前を表示（span class="highlight"で強調）
+                     - p要素で職業を表示
+                     - a要素でCTAボタン（class="cta-button"）
+                -->
+        </div>
+      </section>
+
+      <section id="about" class="about">
+        <div class="container">
+          <h2>About Me</h2>
+          <div class="about-content">
+            <div class="about-text">
+              <p>プログラミングに情熱を持つWeb開発者です。新しい技術を学び、問題解決に取り組むことを楽しんでいます。</p>
+              <!-- 【課題3】スキルリストを実装してください
+                             要件:
+                             - h3要素で"Skills"
+                             - ul要素でclass="skills"
+                             - HTML5, CSS3, JavaScript, Git, GitHubをリスト
+                        -->
+            </div>
+            <div class="about-image">
+              <img src="https://via.placeholder.com/300x300" alt="Your Name" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="projects">
+        <div class="container">
+          <h2>Projects</h2>
+          <div class="project-grid">
+            <!-- 【課題4】プロジェクトカードを1つ実装してください
+                         要件:
+                         - div要素でclass="project-card"
+                         - 画像、タイトル、説明文
+                         - Live DemoとGitHubへのリンク（class="btn-secondary"）
+                    -->
+
+            <div class="project-card">
+              <img src="https://via.placeholder.com/400x200" alt="Project 2" />
+              <h3>Project Name 2</h3>
+              <p>プロジェクトの簡単な説明をここに記載します。</p>
+              <div class="project-links">
+                <a href="#" class="btn-secondary">Live Demo</a>
+                <a href="#" class="btn-secondary">GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <div class="container">
+          <h2>Contact</h2>
+          <p>お気軽にお問い合わせください。</p>
+          <!-- 【課題5】連絡先情報を実装してください
+                     要件:
+                     - div要素でclass="contact-info"
+                     - メール、GitHub、Twitterへのリンク
+                -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Your Name. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

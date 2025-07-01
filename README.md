@@ -209,8 +209,8 @@ git push origin feature/add-projects-section
 
 ```sh
 # GitHub で Fork ボタンをクリック後
-git clone https://github.com/[あなたのユーザー名]/studying-tech-ex.git
-cd studying-tech-ex/repos/4
+git clone https://github.com/[あなたのユーザー名]/exercise-github.git
+cd exercise-github
 ```
 
 #### 2. ブランチ作成
